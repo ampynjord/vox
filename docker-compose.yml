@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+  # ============================================
+  # Base de données PostgreSQL
+  # ============================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: vox-postgres
+    environment:
+      POSTGRES_DB: vox
+      POSTGRES_USER: vox
+      POSTGRES_PASSWORD: vox_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vox"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # Redis pour cache, sessions, présence
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: vox-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ============================================
+  # API Vox (backend REST)
+  # ============================================
+  api:
+    build:
+      context: ./backend
+      dockerfile: ../infra/Dockerfile.api
+    container_name: vox-api
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: postgres://vox:vox_secret@postgres:5432/vox
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-super-secret-change-me-in-production}
+      JWT_EXPIRATION_HOURS: 24
+      API_HOST: 0.0.0.0
+      API_PORT: 8080
+      RUST_LOG: info,vox_api=debug
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ============================================
+  # Gateway WebSocket
+  # ============================================
+  gateway:
+    build:
+      context: ./backend
+      dockerfile: ../infra/Dockerfile.gateway
+    container_name: vox-gateway
+    ports:
+      - "8081:8081"
+    environment:
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-super-secret-change-me-in-production}
+      GATEWAY_HOST: 0.0.0.0
+      GATEWAY_PORT: 8081
+      RUST_LOG: info,vox_gateway=debug
+    depends_on:
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:

@@ -1,0 +1,26 @@
+# Build stage
+FROM rust:1.75-slim AS builder
+
+WORKDIR /app
+RUN apt-get update && apt-get install -y pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
+
+COPY Cargo.toml Cargo.lock* ./
+COPY shared/ shared/
+COPY api/ api/
+COPY gateway/ gateway/
+COPY voice/ voice/
+COPY media/ media/
+
+RUN cargo build --release --bin vox-gateway
+
+# Runtime stage
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y ca-certificates libssl3 && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /app/target/release/vox-gateway /usr/local/bin/vox-gateway
+
+WORKDIR /app
+EXPOSE 8081
+
+CMD ["vox-gateway"]

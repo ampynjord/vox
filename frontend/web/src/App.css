@@ -1,0 +1,58 @@
+:root {
+  --vox-bg-primary: #0f0f14;
+  --vox-bg-secondary: #16161e;
+  --vox-bg-tertiary: #1e1e2a;
+  --vox-bg-input: #24243a;
+  --vox-accent: #7c5cfc;
+  --vox-accent-hover: #6a4de0;
+  --vox-text-primary: #e8e8f0;
+  --vox-text-secondary: #8888a8;
+  --vox-text-muted: #55557a;
+  --vox-error: #ff4757;
+  --vox-success: #2ed573;
+  --vox-border: #2a2a40;
+  --vox-radius: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--vox-bg-primary);
+  color: var(--vox-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.app-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Scrollbar custom */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vox-bg-tertiary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vox-text-muted);
+}
+
+/* Selection */
+::selection {
+  background: rgba(124, 92, 252, 0.3);
+}

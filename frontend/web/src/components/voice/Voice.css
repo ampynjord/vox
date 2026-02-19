@@ -1,0 +1,153 @@
+.voice-panel {
+  background: var(--vox-bg-secondary, #1e1e2e);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 8px;
+}
+
+.voice-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--vox-bg-tertiary, #181825);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--vox-text-secondary, #a6adc8);
+}
+
+.voice-channel-name {
+  flex: 1;
+}
+
+.voice-participant-count {
+  background: var(--vox-accent, #7c5cfc);
+  color: white;
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 0.75rem;
+  min-width: 18px;
+  text-align: center;
+}
+
+.voice-participants {
+  padding: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.voice-participant {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.voice-participant:hover {
+  background: var(--vox-bg-tertiary, #181825);
+}
+
+.voice-participant-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--vox-accent, #7c5cfc);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  position: relative;
+}
+
+.voice-participant-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid #45e17f;
+  animation: voice-pulse 1.5s ease-in-out infinite;
+}
+
+.voice-participant-avatar.muted::after {
+  border-color: transparent;
+  animation: none;
+}
+
+@keyframes voice-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.voice-participant-name {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--vox-text-primary, #cdd6f4);
+}
+
+.voice-participant-icons {
+  display: flex;
+  gap: 4px;
+  color: var(--vox-text-muted, #585b70);
+}
+
+.voice-empty {
+  text-align: center;
+  color: var(--vox-text-muted, #585b70);
+  font-size: 0.8rem;
+  padding: 16px 0;
+}
+
+.voice-controls {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px;
+  background: var(--vox-bg-tertiary, #181825);
+  justify-content: center;
+}
+
+.voice-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: var(--vox-bg-primary, #11111b);
+  color: var(--vox-text-primary, #cdd6f4);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s, color 0.15s;
+}
+
+.voice-btn:hover {
+  background: var(--vox-bg-hover, #313244);
+}
+
+.voice-btn.join {
+  background: var(--vox-accent, #7c5cfc);
+  color: white;
+  flex: 1;
+}
+
+.voice-btn.join:hover {
+  background: #6a4ce8;
+}
+
+.voice-btn.active {
+  background: #e64553;
+  color: white;
+}
+
+.voice-btn.disconnect {
+  background: #e64553;
+  color: white;
+}
+
+.voice-btn.disconnect:hover {
+  background: #d32f4e;
+}
