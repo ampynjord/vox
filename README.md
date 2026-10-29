@@ -1,66 +1,66 @@
 # 🎙️ Vox
 
-**Réseau social vocal/textuel respectueux de la vie privée**
+**Privacy-respecting voice and text social network**
 
-Vox est une plateforme de communication temps réel axée sur la performance, la transparence et le respect des données personnelles.
+Vox is a real-time communication platform focused on performance, transparency and respect for personal data.
 
 ## Architecture
 
 ```
 vox/
-├── backend/              # Backend Rust (Axum)
-│   ├── api/              # API REST (auth, CRUD)
-│   ├── gateway/          # WebSocket gateway (temps réel)
-│   ├── shared/           # Types partagés, auth, validation
-│   ├── voice/            # Serveur WebRTC (à venir)
-│   ├── media/            # Upload/traitement fichiers (à venir)
-│   └── migrations/       # Migrations PostgreSQL
+├── backend/              # Rust backend (Axum)
+│   ├── api/              # REST API (auth, CRUD)
+│   ├── gateway/          # WebSocket gateway (real time)
+│   ├── shared/           # Shared types, auth, validation
+│   ├── voice/            # WebRTC server (coming soon)
+│   ├── media/            # File upload/processing (coming soon)
+│   └── migrations/       # PostgreSQL migrations
 ├── frontend/
-│   └── web/              # App React + Vite + TypeScript
+│   └── web/              # React + Vite + TypeScript app
 ├── infra/                # Dockerfiles
-├── protocol/             # Spécification du protocole
-└── docker-compose.yml    # Stack complète
+├── protocol/             # Protocol specification
+└── docker-compose.yml    # Full stack
 ```
 
-## Stack technique
+## Tech stack
 
 - **Backend**: Rust + Axum + SQLx + Tokio
-- **Base de données**: PostgreSQL 16
-- **Cache/Présence**: Redis 7
+- **Database**: PostgreSQL 16
+- **Cache/Presence**: Redis 7
 - **Frontend**: React 19 + TypeScript + Vite
 - **State management**: Zustand
-- **Temps réel**: WebSocket natif
+- **Real time**: native WebSocket
 
-## Démarrage rapide
+## Quick start
 
-### Prérequis
+### Requirements
 
 - Docker + Docker Compose
-- Rust 1.75+ (pour le dev local)
-- Node.js 20+ (pour le frontend)
+- Rust 1.75+ (for local development)
+- Node.js 20+ (for the frontend)
 
-### Avec Docker
+### With Docker
 
 ```bash
-# Démarrer toute la stack
+# Start the whole stack
 docker compose up -d
 
-# L'API sera disponible sur http://localhost:8080
-# Le gateway WebSocket sur ws://localhost:8081
+# The API will be available at http://localhost:8080
+# The WebSocket gateway at ws://localhost:8081
 ```
 
-### En développement local
+### Local development
 
 ```bash
-# 1. Démarrer les services
+# 1. Start the services
 docker compose up postgres redis -d
 
 # 2. Backend API
 cd backend
-cp .env.example .env  # Ajuster si nécessaire
+cp .env.example .env  # Adjust if needed
 cargo run -p vox-api
 
-# 3. Backend Gateway (dans un autre terminal)
+# 3. Backend Gateway (in another terminal)
 cargo run -p vox-gateway
 
 # 4. Frontend
@@ -69,36 +69,36 @@ npm install
 npm run dev
 ```
 
-## API Endpoints
+## API endpoints
 
 ### Auth
-- `POST /api/v1/auth/register` - Inscription
-- `POST /api/v1/auth/login` - Connexion
+- `POST /api/v1/auth/register` - Sign up
+- `POST /api/v1/auth/login` - Log in
 
-### Espaces
-- `GET /api/v1/spaces` - Mes espaces
-- `POST /api/v1/spaces` - Créer un espace
-- `GET /api/v1/spaces/:id` - Détails d'un espace
-- `PUT /api/v1/spaces/:id` - Modifier un espace
-- `DELETE /api/v1/spaces/:id` - Supprimer un espace
-- `POST /api/v1/spaces/:id/join` - Rejoindre
-- `POST /api/v1/spaces/:id/leave` - Quitter
+### Spaces
+- `GET /api/v1/spaces` - My spaces
+- `POST /api/v1/spaces` - Create a space
+- `GET /api/v1/spaces/:id` - Space details
+- `PUT /api/v1/spaces/:id` - Update a space
+- `DELETE /api/v1/spaces/:id` - Delete a space
+- `POST /api/v1/spaces/:id/join` - Join
+- `POST /api/v1/spaces/:id/leave` - Leave
 
-### Canaux
-- `GET /api/v1/channels/space/:space_id` - Canaux d'un espace
-- `POST /api/v1/channels/space/:space_id` - Créer un canal
-- `PUT /api/v1/channels/:id` - Modifier un canal
-- `DELETE /api/v1/channels/:id` - Supprimer un canal
+### Channels
+- `GET /api/v1/channels/space/:space_id` - Channels of a space
+- `POST /api/v1/channels/space/:space_id` - Create a channel
+- `PUT /api/v1/channels/:id` - Update a channel
+- `DELETE /api/v1/channels/:id` - Delete a channel
 
 ### Messages
-- `GET /api/v1/messages/channel/:channel_id` - Messages d'un canal
-- `POST /api/v1/messages/channel/:channel_id` - Envoyer un message
-- `PUT /api/v1/messages/:id` - Modifier un message
-- `DELETE /api/v1/messages/:id` - Supprimer un message
+- `GET /api/v1/messages/channel/:channel_id` - Messages of a channel
+- `POST /api/v1/messages/channel/:channel_id` - Send a message
+- `PUT /api/v1/messages/:id` - Edit a message
+- `DELETE /api/v1/messages/:id` - Delete a message
 
 ### WebSocket Gateway
-- `ws://localhost:8081/ws?token=<jwt>` - Connexion temps réel
+- `ws://localhost:8081/ws?token=<jwt>` - Real-time connection
 
-## Licence
+## License
 
 Proprietary code, all rights reserved (see [LICENSE](LICENSE)).
